@@ -6,83 +6,41 @@
 #include "rdt.h"
 
 int main(int argc, char *argv[]) {
-    if (argc != 2) { 
-        fprintf(stderr, "Uso: %s <porta_de_escuta>\n", argv[0]);
-        exit(EXIT_FAILURE);
+    if (argc != 2) {  // Verifica se o número de argumentos está correto
+        fprintf(stderr, "Uso: %s <porta_de_escuta>\n", argv[0]); // Exibe mensagem de uso
+        exit(EXIT_FAILURE); // Encerra o programa com falha
     }
     
-    int listen_port = atoi(argv[1]);
+    int listen_port = atoi(argv[1]); // Porta de escuta
     
-    int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sockfd < 0) {
+    int sockfd = socket(AF_INET, SOCK_DGRAM, 0); // Cria o socket
+    if (sockfd < 0) { // Verifica erros
         perror("server: socket");
         exit(EXIT_FAILURE);
     }
     
-    struct sockaddr_in server_addr;
-    memset(&server_addr, 0, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(listen_port);
-    server_addr.sin_addr.s_addr = INADDR_ANY;
+    struct sockaddr_in server_addr; // Estrutura para o endereço do servidor
+    memset(&server_addr, 0, sizeof(server_addr)); // Zera a estrutura
+    server_addr.sin_family = AF_INET; // Define a família de endereços
+    server_addr.sin_port = htons(listen_port); // Define a porta de escuta
+    server_addr.sin_addr.s_addr = INADDR_ANY; // Aceita conexões de qualquer endereço
     
-    if (bind(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+    if (bind(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) { // Associa o socket à porta
         perror("server: bind");
         close(sockfd);
         exit(EXIT_FAILURE);
     }
     
-    printf("server: Escutando na porta %d.\n", listen_port);
+    printf("server: Escutando na porta %d.\n", listen_port); // Exibe mensagem de escuta
     
     
-    FILE *fp = NULL;
-    pkt p, ack;
-    struct sockaddr_in src;
-    socklen_t addrlen;
-    int ns, nr, rv;
-    int totalBytes = 0;
-    
-    // Aguarda o PKT_START com os metadados do arquivo.
-    addrlen = sizeof(struct sockaddr_in);
-    nr = recvfrom(sockfd, &p, sizeof(pkt), 0, (struct sockaddr *)&src, &addrlen);
-    if (nr < 0) {
-        perror("rdt_recv_file: recvfrom(PKT_START)");
-        return ERROR;
-    }
-    if (p.h.pkt_type != PKT_START) {
-        fprintf(stderr, "rdt_recv_file: Esperado PKT_START, recebido outro tipo.\n");
-        return ERROR;
-    }
-    // Extrai os metadados.
-    file_meta meta;
-    if (p.h.pkt_size - sizeof(hdr) < sizeof(file_meta)) {
-        fprintf(stderr, "rdt_recv_file: Tamanho insuficiente para metadados.\n");
-        return ERROR;
-    }
-    memcpy(&meta, p.msg, sizeof(file_meta));
-    printf("rdt_recv_file: PKT_START recebido. Nome do arquivo: %s, Tamanho: %ld bytes.\n", meta.filename, meta.fileSize);
-    // Envia ACK para o PKT_START.
-    if (make_pkt(&ack, PKT_ACK, p.h.pkt_seq, NULL, 0) < 0)
-        return ERROR;
-    ns = sendto(sockfd, &ack, ack.h.pkt_size, 0, (struct sockaddr *)&src, sizeof(struct sockaddr_in));
-    if (ns < 0) {
-        perror("rdt_recv_file: sendto(PKT_START ACK)");
-        return ERROR;
+    if (rdt_recv_file(sockfd, "output.bin") < 0) { // Recebe o arquivo
+        fprintf(stderr, "server: Erro ao receber o arquivo.\n"); // Exibe mensagem de erro
+        close(sockfd);
+        exit(EXIT_FAILURE);
     }
     
-    char filepath[100];
-    strcpy(filepath, "receive/");
-    strcat(filepath, meta.filename);
-    // Abre o arquivo para escrita; utiliza o nome recebido nos metadados.
-    fp = fopen(filepath, "wb");
-    if (!fp) {
-        perror("rdt_recv_file: fopen");
-        return ERROR;
-    }
-
-    
-
-
-    printf("server: Arquivo recebido com sucesso.\n");
-    close(sockfd);
+    printf("server: Arquivo recebido com sucesso.\n"); // Exibe mensagem de sucesso
+    close(sockfd); // Fecha o socket
     return 0;
 }
