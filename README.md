@@ -236,23 +236,23 @@ Os testes realizados com o CORE Emulator comprovaram a robustez e confiabilidade
 ## Lista de Figuras
 
 1. **Topologia de Conexão da Simulação**  
-   ![Topologia de conexão da Simulação](Topologia_RDT_Imagem.png)
+   ![Topologia de conexão da Simulação](<assets/Topologia_RDT_Imagem.png>)
 2. **Cliente (n6) e Servidor (n8) – 10 Kbps Up/Down, 3% de perda**  
-   ![RDT File Send](RDT_FileSend.png)
+   ![RDT File Send](<assets/RDT_FileSend.png>)
 3. **Upload – 50 Kbps Up, 10 Kbps Down, 3% de perda**  
-   ![Upload 50u/10d](50u_10d_3loss.png)
+   ![Upload 50u/10d](<assets/50u_10d_3loss.png>)
 4. **Upload – 50 Kbps Up, 2 Kbps Down, 3% de perda**  
-   ![Upload 50u/2d](50u_2d_3loss.png)
+   ![Upload 50u/2d](<assets/50u_2d_3loss.png>)
 5. **Upload – 5 Kbps Up, 50 Kbps Down, 3% de perda**  
-   ![Upload 5u/50d](5u_50d_3loss.png)
+   ![Upload 5u/50d](<assets/5u_50d_3loss.png>)
 6. **Upload – 50 Kbps Up/Down, 3% de perda [Parte 1]**  
-   ![Upload 50u/50d Parte 1](50u_50d_3loss-pt1.png)
+   ![Upload 50u/50d Parte 1](<assets/50u_50d_3loss-pt1.png>)
 7. **Upload – 50 Kbps Up/Down, 3% de perda [Parte 2]**  
-   ![Upload 50u/50d Parte 2](50u_50d_3loss-pt2.png)
+   ![Upload 50u/50d Parte 2](<assets/50u_50d_3loss-pt2.png>)
 8. **Upload – 50 Kbps Up/Down, 3% de perda (Tempo e Janela estáticos)**  
-   ![Upload 50u/50d estático](50u_50d_3loss-static.png)
+   ![Upload 50u/50d estático](<assets/50u_50d_3loss-static.png>)
 9. **Upload – 50 Kbps Up/Down, 3% de perda (Janela estática)**  
-   ![Upload 50u/50d Janela estática](50u_50d_3loss-Wstatic.png)
+   ![Upload 50u/50d Janela estática](<assets/50u_50d_3loss-Wstatic.png>)
 
 ---
 
