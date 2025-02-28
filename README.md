@@ -260,8 +260,4 @@ Esta implementação e análise demonstram a robustez do protocolo RDT modificad
 
 ---
 
-Você pode encontrar o código e os detalhes da implementação no [GitHub](https://github.com/faduzin/rdt-implementation).
-
----
-
 Espero que este README seja útil para documentar o projeto no repositório. Caso haja necessidade de ajustes ou complementos, sinta-se à vontade para modificar conforme a necessidade do projeto.
